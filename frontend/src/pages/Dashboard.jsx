@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import API from "../api/api";
 import KPICard from "../components/KPICard";
 import RevenueChart from "../components/RevenueChart";
+import Chat from "./Chat";
 
 function Dashboard() {
   const [summary, setSummary] = useState(null);
@@ -18,12 +19,14 @@ function Dashboard() {
 
       setSummary(summaryRes.data);
       setTrends(trendsRes.data);
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      console.error(error);
     }
   };
 
-  if (!summary) return <h2>Loading Dashboard...</h2>;
+  if (!summary) {
+    return <h2>Loading Dashboard...</h2>;
+  }
 
   return (
     <div className="dashboard">
@@ -47,6 +50,7 @@ function Dashboard() {
       </div>
 
       <RevenueChart data={trends} />
+      <Chat />
     </div>
   );
 }
