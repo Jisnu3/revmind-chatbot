@@ -3,56 +3,59 @@
 A full-stack conversational sales analytics application built for the RevMind AI Full-Stack Engineer Assignment.
 
 The application allows sales managers to:
-- View business KPIs
-- Analyze revenue trends
-- Ask natural language business questions
-- Receive AI-generated answers powered by Gemini
 
-# RevMind AI - NovaBite Sales Chatbot
+* View business KPIs
+* Analyze revenue trends
+* Ask natural language business questions
+* Receive AI-generated answers powered by Google Gemini.
 
-A full-stack conversational sales analytics application built for the RevMind AI Full-Stack Engineer Assignment.
-
-The application allows sales managers to:
-- View business KPIs
-- Analyze revenue trends
-- Ask natural language business questions
-- Receive AI-generated answers powered by Gemini
+---
 
 ## Technology Stack
 
 ### Backend
-- FastAPI
-- SQLite
-- Pandas
-- Google Gemini API
+
+* FastAPI
+* SQLite
+* Pandas
+* Google Gemini API
 
 ### Frontend
-- React (Vite)
-- Axios
-- Recharts
+
+* React (Vite)
+* Axios
+* Recharts
 
 ### Database
-- SQLite
+
+* SQLite
+
+---
 
 ## Features
 
 ### Dashboard
-- Total Net Revenue KPI
-- Gross Profit Margin KPI
-- Top Region KPI
-- Monthly Revenue Trend Chart
+
+* Total Net Revenue KPI
+* Gross Profit Margin KPI
+* Top Region KPI
+* Monthly Revenue Trend Chart
 
 ### Sales Analytics Chatbot
+
 Supports business questions such as:
 
-- Which region had the highest net revenue in Q1 2024?
-- What is the gross profit margin for the Snacks category?
-- Which sales rep closed the most units in 2025?
-- Compare E-Commerce vs Modern Trade net revenue.
-- What was the best performing product in the West region?
+* Which region had the highest net revenue in Q1 2024?
+* What is the gross profit margin for the Snacks category?
+* Which sales rep closed the most units in 2025?
+* Compare E-Commerce vs Modern Trade net revenue.
+* What was the best performing product in the West region?
+
+---
 
 ## Project Structure
 
+```text
 revmind-chatbot/
 │
 ├── backend/
@@ -71,64 +74,84 @@ revmind-chatbot/
 ├── README.md
 ├── .env.example
 └── .gitignore
+```
 
-# Setup Instructions
+---
 
-## Clone Repository
+## Setup Instructions
 
+### Clone Repository
+
+```bash
 git clone https://github.com/Jisnu3/revmind-chatbot.git
-
 cd revmind-chatbot
+```
+
+---
 
 ## Backend Setup
 
-Navigate to backend folder:
-
+```bash
 cd backend
-
-Create virtual environment:
 
 python -m venv venv
 
-Activate environment:
-
-### Windows
-
 venv\Scripts\activate
 
-Install dependencies:
-
 pip install -r requirements.txt
+```
 
-## Seed Database
+### Seed Database
 
-Load CSV data into SQLite:
-
+```bash
 python seed.py
+```
 
-Expected output:
+Expected Output:
 
+```text
 Loaded 1000 rows into SQLite
+```
 
-## Run Backend
+### Run Backend
 
+```bash
 uvicorn app.main:app --reload
+```
+
+Backend URL:
+
+```text
+http://127.0.0.1:8000
+```
+
+Swagger Docs:
+
+```text
+http://127.0.0.1:8000/docs
+```
+
+---
 
 ## Frontend Setup
 
-Open a second terminal.
+Open a second terminal:
 
-Navigate to frontend:
-
+```bash
 cd frontend
-
-Install packages:
 
 npm install
 
-Run application:
-
 npm run dev
+```
+
+Frontend URL:
+
+```text
+http://localhost:5173
+```
+
+---
 
 ## API Endpoints
 
@@ -140,12 +163,12 @@ Returns product-level revenue and units sold.
 
 Returns:
 
-- Total Net Revenue
-- Total Units
-- Gross Profit Margin
-- Top Region
-- Top Channel
-- Top Product
+* Total Net Revenue
+* Total Units
+* Gross Profit Margin
+* Top Region
+* Top Channel
+* Top Product
 
 ### GET /api/trends
 
@@ -153,36 +176,92 @@ Returns monthly revenue trend data.
 
 ### POST /api/chat
 
-Accepts:
+Request:
 
+```json
 {
   "question": "Which region had the highest net revenue in Q1 2024?"
 }
+```
 
-Returns:
+Response:
 
+```json
 {
   "answer": "West region had the highest net revenue..."
 }
+```
+
+---
 
 ## LLM Used
 
-Google Gemini 2.5 Flash
+### Google Gemini 2.5 Flash
 
-### Why Gemini?
+Why Gemini?
 
-- Free API tier available
-- Fast response time
-- Suitable for business analytics questions
-- Easy integration with FastAPI
+* Free API tier available
+* Fast response times
+* Suitable for business analytics questions
+* Easy FastAPI integration
 
-## LLM Used
+---
 
-Google Gemini 2.5 Flash
+## Prompt Design
 
-### Why Gemini?
+The chatbot does not send the full dataset to Gemini.
 
-- Free API tier available
-- Fast response time
-- Suitable for business analytics questions
-- Easy integration with FastAPI
+Workflow:
+
+1. User asks a question.
+2. Intent detection identifies the query type.
+3. Relevant SQL query is executed.
+4. SQLite returns the required business data.
+5. Context is generated.
+6. Gemini creates a natural-language answer.
+
+Example:
+
+Question:
+
+Which region had the highest net revenue in Q1 2024?
+
+Context:
+
+West = 294046.66
+
+Prompt:
+
+"You are a business analytics assistant. Answer using only supplied data."
+
+This approach minimizes hallucinations and improves accuracy.
+
+---
+
+## Future Improvements
+
+* Authentication and user accounts
+* Additional analytics queries
+* Streaming chatbot responses
+* Unit testing
+* Docker deployment
+* Retrieval-Augmented Generation (RAG)
+* Query caching
+* Interactive visualizations
+
+---
+
+## Tradeoffs
+
+* SQLite used instead of PostgreSQL for simplicity.
+* Rule-based intent detection implemented before LLM processing.
+* Focused on required assignment questions first.
+* Limited analytics coverage beyond assignment requirements.
+
+---
+
+## Author
+
+Jisnu Hazra
+
+Submitted for the RevMind AI Full-Stack Engineer Assignment.
