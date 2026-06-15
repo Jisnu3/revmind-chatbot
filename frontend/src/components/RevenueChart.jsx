@@ -13,8 +13,8 @@ function RevenueChart({ data }) {
     <div className="chart-container">
       <h2>Monthly Revenue Trend</h2>
 
-      <ResponsiveContainer width="100%" height={350}>
-        <LineChart data={data}>
+      <ResponsiveContainer width="100%" height={250}>
+        <LineChart data={data} width={900} height={400}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="month" />
           <YAxis />

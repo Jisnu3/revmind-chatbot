@@ -4,54 +4,76 @@ import API from "../api/api";
 function Chat() {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
-  const [loading, setLoading] = useState(false);
+const [loading, setLoading] = useState(false);
 
-  const askQuestion = async () => {
-    if (!question.trim()) return;
+const handleSend = async () => {
 
-    setLoading(true);
-    setAnswer("");
+  setLoading(true);
 
-    try {
-      const res = await API.post("/api/chat", {
-        question,
-      });
+  try {
 
-      setAnswer(res.data.answer);
-    } catch (error) {
-      console.error(error);
-      setAnswer("Error communicating with server.");
-    }
+    const response = await API.post(
+      "/api/chat",
+      {
+        question
+      }
+    );
 
-    setLoading(false);
-  };
+    setAnswer(response.data.answer);
+
+  } catch (error) {
+
+    setAnswer("Something went wrong.");
+  }
+
+  setLoading(false);
+};
 
   return (
-    <div className="chat-container">
-      <h2>Sales Analytics Chatbot</h2>
+    <div className="chat-search-card">
 
-      <input
+    <div className="search-row">
+
+        <input
         type="text"
-        placeholder="Ask a question..."
+        placeholder="Ask a business question..."
         value={question}
         onChange={(e) => setQuestion(e.target.value)}
-      />
+        />
 
-      <button onClick={askQuestion}>
-        Send
-      </button>
+        <button
+        onClick={handleSend}
+        disabled={loading}
+        >
+        {loading ? "Thinking..." : "Send"}
+        </button>
 
-      {loading && <p>Thinking...</p>}
+    </div>
 
-      {question && (
-        <div className="chat-box">
-          <h4>Question</h4>
-          <p>{question}</p>
+    {answer && (
+        <div className="recent-answer">
 
-          <h4>Answer</h4>
-          <p>{answer}</p>
+        <h3>Recent Question & Answer</h3>
+
+        <p>
+            <span className="question-label">
+            Question:
+            </span>
+            {" "}
+            {question}
+        </p>
+
+        <div>
+        <span className="answer-label">
+            Answer:
+        </span>
+        <pre className="answer-text">
+            {answer}
+        </pre>
         </div>
-      )}
+        </div>
+    )}
+
     </div>
   );
 }
